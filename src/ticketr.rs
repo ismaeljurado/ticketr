@@ -1,21 +1,20 @@
 #![no_std]
 
-extern crate alloc; // <<--- ¡¡AQUÍ ESTÁ LA LÍNEA MÁGICA!!
+extern crate alloc; 
 
 multiversx_sc::imports!();
 
-// Las importaciones que ya habíamos descubierto que eran correctas
+
 use multiversx_sc::codec;
 use multiversx_sc::proxy_imports::{type_abi, TopDecode, TopEncode};
-// AÑADIDO: Importamos el trait ToString para poder usarlo en números
 use alloc::string::ToString;
 
-// --- CONSTANTES ---
+// --- CONSTANTS ---
 const TOKEN_TICKER: &[u8] = b"EVENTTICKET";
 const AMOUNT_TO_MINT: u64 = 1;
 const ROYALTIES: u32 = 0;
 
-// --- ESTRUCTURA DE DATOS ---
+// --- ESTRUCTURES DE DADES ---
 #[type_abi]
 #[derive(TopEncode, TopDecode)]
 pub struct EventInfo<M: ManagedTypeApi> {
@@ -24,7 +23,6 @@ pub struct EventInfo<M: ManagedTypeApi> {
     pub sold_tickets: u64,
 }
 
-// --- TODA LA LÓGICA DEL CONTRATO VA DENTRO DE ESTE ÚNICO TRAIT ---
 #[multiversx_sc::contract]
 pub trait TicketSaleContract {
     // --- STORAGE MAPPERS ---
@@ -37,7 +35,6 @@ pub trait TicketSaleContract {
     #[storage_mapper("nftTokenIdentifier")]
     fn nft_token_identifier(&self) -> SingleValueMapper<TokenIdentifier>;
 
-    // --- FUNCIÓN DE INICIALIZACIÓN ---
     #[init]
     fn init(&self) {}
 
@@ -129,7 +126,6 @@ pub trait TicketSaleContract {
         
         let mut nft_name = event_data.name.clone();
         nft_name.append_bytes(b" Ticket #");
-        // Con `extern crate alloc;` y `use alloc::string::ToString;` esto ahora funciona.
         nft_name.append(&ManagedBuffer::from(event_data.sold_tickets.to_string().as_bytes()));
 
         let mut attributes = ManagedBuffer::new();
@@ -141,7 +137,7 @@ pub trait TicketSaleContract {
 
         self.event_info().set(&event_data);
 
-        // Paso 1: Crear el SFT. Esto devuelve el nuevo nonce.
+        // Pas 1: Crear l'SFT. Això retorna el nou nonce.
         let new_nonce = self.send().esdt_nft_create(
             &token_id,
             &BigUint::from(AMOUNT_TO_MINT),
@@ -152,7 +148,7 @@ pub trait TicketSaleContract {
             &uris,
         );
 
-        // Paso 2: Enviar el SFT recién creado al comprador.
+        // Pas 2: Enviar l'SFT creat cap al comprador.
         self.send().direct_esdt(&caller, &token_id, new_nonce, &BigUint::from(AMOUNT_TO_MINT));
     }
     
