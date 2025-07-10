@@ -1,0 +1,114 @@
+{
+    "buildInfo": {
+        "rustc": {
+            "version": "1.87.0",
+            "commitHash": "17067e9ac6d7ecb70e50f92c1944e545188d2359",
+            "commitDate": "2025-05-09",
+            "channel": "Stable",
+            "short": "rustc 1.87.0 (17067e9ac 2025-05-09)"
+        },
+        "contractCrate": {
+            "name": "ticketr",
+            "version": "0.0.0"
+        },
+        "framework": {
+            "name": "multiversx-sc",
+            "version": "0.59.0"
+        }
+    },
+    "name": "TicketSaleContract",
+    "constructor": {
+        "inputs": [],
+        "outputs": []
+    },
+    "endpoints": [
+        {
+            "name": "setup_event",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "EGLD"
+            ],
+            "inputs": [
+                {
+                    "name": "event_name",
+                    "type": "bytes"
+                },
+                {
+                    "name": "price",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "total_tickets",
+                    "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "withdraw",
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "buy_ticket",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "EGLD"
+            ],
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "getEventInfo",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "EventInfo"
+                }
+            ]
+        },
+        {
+            "name": "getTicketPrice",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getNftTokenIdentifier",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "TokenIdentifier"
+                }
+            ]
+        }
+    ],
+    "esdtAttributes": [],
+    "hasCallback": true,
+    "types": {
+        "EventInfo": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "name",
+                    "type": "bytes"
+                },
+                {
+                    "name": "total_tickets",
+                    "type": "u64"
+                },
+                {
+                    "name": "sold_tickets",
+                    "type": "u64"
+                }
+            ]
+        }
+    }
+}
